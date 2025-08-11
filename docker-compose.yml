@@ -50,7 +50,7 @@ services:
   frontend:
     build:
       context: ./frontend-mediatheque
-      target: ${NODE_ENV:-production}
+      target: development
     container_name: mediatheque-frontend
     restart: unless-stopped
     environment:
