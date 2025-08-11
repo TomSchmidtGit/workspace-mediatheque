@@ -1,0 +1,55 @@
+# Fichiers d'environnement
+.env
+.env.local
+.env.*.local
+
+# Fichiers système
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Fichiers temporaires
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# IDE et éditeurs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Docker
+.docker/
+
+# Fichiers de sauvegarde
+*.bak
+*.backup
+*.old
+
+# Fichiers de cache
+.cache/
+.temp/
+
+# Fichiers de test
+coverage/
+.nyc_output/
+test-results/
+
+# Fichiers de build
+dist/
+build/
+out/
+
+# Fichiers de dépendances (optionnel, selon votre stratégie)
+# node_modules/
