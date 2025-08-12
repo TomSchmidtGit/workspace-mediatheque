@@ -35,14 +35,14 @@ fi
 
 echo "✅ Les repos backend et frontend sont présents"
 
-# Créer le fichier .env s'il n'existe pas
+# Vérifier que le fichier .env existe
 if [ ! -f ".env" ]; then
-    echo "📝 Création du fichier .env..."
-    cp env.example .env
-    echo "⚠️  Veuillez éditer le fichier .env avec vos vraies valeurs"
+    echo "❌ Le fichier .env n'existe pas"
+    echo "   Créez-le avec la configuration Docker minimale :"
     echo "   nano .env"
+    exit 1
 else
-    echo "✅ Le fichier .env existe déjà"
+    echo "✅ Le fichier .env est présent"
 fi
 
 # Vérifier les permissions des scripts
@@ -52,8 +52,7 @@ echo ""
 echo "🎉 Configuration terminée !"
 echo ""
 echo "📋 Prochaines étapes :"
-echo "   1. Éditer le fichier .env avec vos vraies valeurs"
-echo "   2. Lancer en mode développement : ./scripts/dev.sh"
-echo "   3. Lancer en mode production : ./scripts/prod.sh"
+echo "   1. Lancer en mode développement : make dev"
+echo "   2. Lancer en mode production : make prod"
 echo ""
-echo "📚 Consultez README-Docker.md pour plus d'informations"
+echo "📚 Consultez README.md pour plus d'informations"

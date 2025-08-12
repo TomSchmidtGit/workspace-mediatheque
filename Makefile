@@ -1,7 +1,7 @@
 # Makefile pour le workspace parent médiathèque
 # Usage: make [target]
 
-.PHONY: help setup dev prod clean logs status build rebuild
+.PHONY: help setup dev prod clean logs status build rebuild check quick-check logs-backend logs-frontend clean-smart
 
 # Variables
 COMPOSE_FILE = docker-compose.yml
@@ -21,11 +21,16 @@ help:
 	@echo "🔧 Gestion :"
 	@echo "  status    - Statut des services"
 	@echo "  logs      - Affichage des logs"
+	@echo "  logs-backend  - Logs du backend uniquement"
+	@echo "  logs-frontend - Logs du frontend uniquement"
 	@echo "  clean     - Nettoyage et arrêt des services"
+	@echo "  clean-smart - Nettoyage intelligent avec prune"
 	@echo "  rebuild   - Reconstruction complète des images"
 	@echo ""
 	@echo "📚 Documentation :"
 	@echo "  help      - Affiche cette aide"
+	@echo "  check     - Vérification de l'environnement"
+	@echo "  quick-check - Vérification rapide Docker Compose"
 
 # Configuration initiale
 setup:
@@ -94,10 +99,6 @@ shell-frontend:
 	@echo "🐚 Connexion au frontend..."
 	docker-compose exec frontend sh
 
-shell-mongodb:
-	@echo "🐚 Connexion à MongoDB..."
-	docker-compose exec mongodb mongosh
-
 # Vérification de l'environnement
 check:
 	@echo "🔍 Vérification de l'environnement..."
@@ -106,3 +107,24 @@ check:
 	@echo "Fichier .env: $(shell if [ -f .env ]; then echo '✅ Présent'; else echo '❌ Absent'; fi)"
 	@echo "Backend: $(shell if [ -d backend-mediatheque ]; then echo '✅ Présent'; else echo '❌ Absent'; fi)"
 	@echo "Frontend: $(shell if [ -d frontend-mediatheque ]; then echo '✅ Présent'; else echo '❌ Absent'; fi)"
+
+# Vérification rapide Docker Compose
+quick-check:
+	@echo "🔍 Vérification rapide Docker Compose..."
+	@docker-compose config > /dev/null && echo "✅ Configuration valide" || echo "❌ Erreur de configuration"
+
+# Logs par service
+logs-backend:
+	@echo "📋 Logs du backend :"
+	docker-compose logs -f backend
+
+logs-frontend:
+	@echo "📋 Logs du frontend :"
+	docker-compose logs -f frontend
+
+# Nettoyage intelligent
+clean-smart:
+	@echo "🧹 Nettoyage intelligent..."
+	docker-compose down
+	docker system prune -f
+	@echo "✅ Nettoyage terminé"

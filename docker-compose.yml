@@ -1,56 +1,31 @@
 version: '3.8'
 
 services:
-  # Service MongoDB
-  mongodb:
-    image: mongo:7.0
-    container_name: mediatheque-mongodb
-    restart: unless-stopped
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodb_data:/data/db
-      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-    networks:
-      - mediatheque-network
-
   # Service Backend
   backend:
     build:
       context: ./backend-mediatheque
-      target: ${NODE_ENV:-production}
+      target: ${NODE_ENV:-development}
     container_name: mediatheque-backend
     restart: unless-stopped
     environment:
-      NODE_ENV: ${NODE_ENV:-production}
+      NODE_ENV: ${NODE_ENV:-development}
       PORT: ${BACKEND_PORT:-5001}
-      MONGO_URI: ${MONGO_URI}
-      JWT_SECRET: ${JWT_SECRET}
-      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
-      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}
-      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
-      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
-      MAIL_USER: ${MAIL_USER}
-      MAIL_PASS: ${MAIL_PASS}
       FRONTEND_URL: ${FRONTEND_URL}
     ports:
       - "${BACKEND_PORT:-5001}:5001"
-    depends_on:
-      - mongodb
+    # Pas de dépendance MongoDB - utilise Atlas directement
     networks:
       - mediatheque-network
     volumes:
       - ./backend-mediatheque/logs:/app/logs
+      - ./backend-mediatheque/.env:/app/.env:ro
 
   # Service Frontend
   frontend:
     build:
       context: ./frontend-mediatheque
-      target: development
+      target: ${NODE_ENV:-development}
     container_name: mediatheque-frontend
     restart: unless-stopped
     environment:
@@ -62,10 +37,11 @@ services:
       - backend
     networks:
       - mediatheque-network
+    volumes:
+      - ./frontend-mediatheque/src:/app/src:ro
+      - ./frontend-mediatheque/.env:/app/.env:ro
 
-volumes:
-  mongodb_data:
-    driver: local
+# Pas de volumes MongoDB - utilise Atlas
 
 networks:
   mediatheque-network:
