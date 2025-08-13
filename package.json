@@ -38,9 +38,6 @@
     "security:backend": "cd backend-mediatheque && npm audit --audit-level=moderate",
     "status": "./scripts/coordinate.sh status"
   },
-  "devDependencies": {
-    "pre-commit": "^1.2.2"
-  },
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=8.0.0"
