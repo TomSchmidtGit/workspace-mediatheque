@@ -1,14 +1,13 @@
 # Dependencies
 node_modules/
+*/node_modules/
+
+# Logs
+logs/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# Environment variables (local overrides)
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
 
 # Build outputs
 dist/
@@ -16,96 +15,33 @@ build/
 .next/
 out/
 
-# Logs
-logs/
-*.log
-
-# Runtime data
-pids/
-*.pid
-*.seed
-*.pid.lock
-
-# Coverage directory used by tools like istanbul
+# Coverage
 coverage/
+*/coverage/
 *.lcov
 
-# nyc test coverage
-.nyc_output
+# Environment
+.env*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# Dependency directories
-jspm_packages/
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Microbundle cache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
-
-# Optional REPL history
-.node_repl_history
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity
-
-# parcel-bundler cache (https://parceljs.org/)
-.cache
-.parcel-cache
-
-# Next.js build output
-.next
-
-# Nuxt.js build / generate output
-.nuxt
-dist
-
-# Gatsby files
+# Cache et fichiers temporaires
 .cache/
-public
+.parcel-cache/
+*.tsbuildinfo
 
-# Storybook build outputs
-.out
-.storybook-out
-
-# Temporary folders
-tmp/
-temp/
-
-# Editor directories and files
+# OS et éditeurs
+.DS_Store
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
 
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+# Pre-commit (plus nécessaire dans le workspace)
+.pre-commit-config.yaml.bak
 
-# Docker
-.dockerignore
-
-# Testing
-coverage/
-.nyc_output/
-
-# Production
-/build
-
-# Misc
-*.tgz
-*.tar.gz
+# Fichiers de configuration locaux
+.env
+.env.local

@@ -1,0 +1,48 @@
+{
+  "name": "mediatheque-workspace",
+  "version": "1.0.0",
+  "description": "Workspace parent pour le projet médiathèque",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && cd frontend-mediatheque && npm install && cd ../backend-mediatheque && npm install",
+    "lint": "npm run lint:frontend && npm run lint:backend",
+    "lint:frontend": "cd frontend-mediatheque && npm run lint",
+    "lint:backend": "cd backend-mediatheque && npm run lint",
+    "lint:fix": "npm run lint:fix:frontend && npm run lint:fix:backend",
+    "lint:fix:frontend": "cd frontend-mediatheque && npm run lint:fix",
+    "lint:fix:backend": "cd backend-mediatheque && npm run lint:fix",
+    "format": "npm run format:frontend && npm run format:backend",
+    "format:frontend": "cd frontend-mediatheque && npm run format",
+    "format:backend": "cd backend-mediatheque && npm run format",
+    "format:check": "npm run format:check:frontend && npm run format:check:backend",
+    "format:check:frontend": "cd frontend-mediatheque && npm run format:check",
+    "format:check:backend": "cd backend-mediatheque && npm run format:check",
+    "test": "npm run test:frontend && npm run test:backend",
+    "test:frontend": "cd frontend-mediatheque && npm run test:run",
+    "test:backend": "cd backend-mediatheque && npm run test:ci",
+    "test:coverage": "npm run test:coverage:frontend && npm run test:coverage:backend",
+    "test:coverage:frontend": "cd frontend-mediatheque && npm run test:coverage",
+    "test:coverage:backend": "cd backend-mediatheque && npm run test:coverage",
+    "ci": "npm run lint && npm run format:check && npm run test",
+    "ci:frontend": "cd frontend-mediatheque && npm run ci",
+    "ci:backend": "cd backend-mediatheque && npm run ci",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd frontend-mediatheque && npm run build",
+    "build:backend": "cd backend-mediatheque && npm run build",
+    "dev": "docker-compose up -d",
+    "dev:down": "docker-compose down",
+    "dev:logs": "docker-compose logs -f",
+    "dev:rebuild": "docker-compose down && docker-compose build --no-cache && docker-compose up -d",
+    "security:check": "npm run security:frontend && npm run security:backend",
+    "security:frontend": "cd frontend-mediatheque && npm audit --audit-level=moderate",
+    "security:backend": "cd backend-mediatheque && npm audit --audit-level=moderate",
+    "status": "./scripts/coordinate.sh status"
+  },
+  "devDependencies": {
+    "pre-commit": "^1.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}
