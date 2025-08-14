@@ -1,185 +1,170 @@
-# 🚀 Workspace Parent Médiathèque
+# 🏛️ Workspace Médiathèque
 
-Ce workspace permet de gérer et lancer facilement votre projet médiathèque complet avec Docker, incluant le backend Node.js et le frontend React. **Configuration optimisée pour le développement avec MongoDB Atlas.**
+Workspace parent simple pour orchestrer le frontend et backend de la médiathèque avec Docker.
 
-## 📁 Structure du projet
+## 🎯 Objectif
 
-**Structure des repos :**
-```
-├── backend-mediatheque/     # Repo backend (Node.js/Express) → MongoDB Atlas
-├── frontend-mediatheque/    # Repo frontend (React/Vite)
-└── workspace-mediatheque/   # Repo workspace (ce repo)
-```
+Ce workspace sert de **pont Docker** entre vos deux projets :
+- **Frontend** : Application React/TypeScript
+- **Backend** : API Node.js/Express
 
-**Structure du workspace :**
+Il permet de lancer l'ensemble avec une seule commande Docker Compose.
+
+## 📁 Structure
+
 ```
 workspace-mediatheque/
-├── backend-mediatheque -> ../backend-mediatheque    # Lien symbolique
-├── frontend-mediatheque -> ../frontend-mediatheque  # Lien symbolique
-├── .env                     # Configuration Docker (ports, URLs)
-├── docker-compose.yml       # Orchestration des services
-├── Makefile                 # Commandes de gestion optimisées
-└── scripts/                 # Scripts d'automatisation
+├── 📁 backend-mediatheque/        # Votre repo backend
+├── 📁 frontend-mediatheque/       # Votre repo frontend
+├── 📁 scripts/                    # Scripts de gestion
+├── docker-compose.yml             # Orchestration Docker
+├── Makefile                       # Commandes simplifiées
+└── package.json                   # Scripts workspace
 ```
 
-## 🛠️ Prérequis
+## ⚙️ Prérequis
 
-- Docker et Docker Compose installés
-- Les repos `backend-mediatheque` et `frontend-mediatheque` clonés **au même niveau** que ce workspace
-- Configuration backend avec MongoDB Atlas (JWT, Cloudinary, etc.)
+- **Docker** et **Docker Compose** installés
+- Les repos `backend-mediatheque` et `frontend-mediatheque` clonés **au même niveau**
+- Configuration des variables d'environnement dans chaque repo individuel
 
 ## 🚀 Démarrage rapide
 
-### 1. Configuration initiale
+### 1. Vérifier la structure
 ```bash
-make setup
-# ou
-./scripts/setup.sh
+# Vérifier que les repos sont présents
+ls -la
+# Doit afficher : backend-mediatheque/ et frontend-mediatheque/
 ```
 
-### 2. Lancer en mode développement
+### 2. Lancer les services
 ```bash
+# Démarrage simple
 make dev
-# ou
-./scripts/dev.sh
+
+# Ou avec npm
+npm run dev
 ```
 
-**C'est tout !** Votre application est maintenant accessible.
+### 3. Accéder aux services
+- **Frontend** : http://localhost:3000
+- **Backend API** : http://localhost:5001
 
-## 🌐 Accès aux services
+## 🔧 Commandes disponibles
 
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:5001
-- **MongoDB**: Atlas (externe, pas de base locale)
-
-## 📋 Commandes disponibles
-
+### 🚀 Démarrage et arrêt
 ```bash
-# 🚀 Lancement
-make dev           # Mode développement
-make prod          # Mode production (pour tests locaux)
+make dev          # Démarrage développement
+make prod         # Démarrage production
+make stop         # Arrêt des services
+make status       # Statut des services
+```
 
-# 🔧 Gestion
-make status        # Statut des services
-make logs          # Logs de tous les services
-make logs-backend  # Logs du backend uniquement
-make logs-frontend # Logs du frontend uniquement
+### 📊 Monitoring
+```bash
+make logs         # Logs en temps réel
+make logs-backend # Logs backend uniquement
+make logs-frontend # Logs frontend uniquement
+```
 
-# 🏗️ Construction
-make build         # Construction des images
-make rebuild       # Reconstruction complète
+### 🧹 Maintenance
+```bash
+make clean        # Nettoyage complet
+make rebuild      # Reconstruction des images
+make check        # Vérification de l'environnement
+```
 
-# 🧹 Nettoyage
-make clean         # Nettoyage et arrêt
-make clean-smart   # Nettoyage intelligent avec prune
-
-# 🔍 Diagnostic
-make check         # Vérification de l'environnement
-make quick-check   # Vérification rapide Docker Compose
-
-# 🐚 Accès aux conteneurs
-make shell-backend # Connexion au backend
+### 🐳 Docker avancé
+```bash
+make shell-backend  # Connexion au backend
 make shell-frontend # Connexion au frontend
-
-# 📚 Aide
-make help          # Affiche cette aide
 ```
 
-## 🔧 Configuration
-
-### Variables d'environnement (workspace-mediatheque/.env)
+## 📋 Scripts npm
 
 ```bash
-# Configuration Docker
-NODE_ENV=development
-BACKEND_PORT=5001
-FRONTEND_PORT=3000
+# Développement
+npm run dev              # Démarrage Docker
+npm run dev:down         # Arrêt des services
+npm run dev:logs         # Affichage des logs
+npm run dev:rebuild      # Reconstruction
 
-# URLs de connexion
-FRONTEND_URL=http://localhost:3000
-VITE_API_URL=http://localhost:5001/api
+# Tests (exécutés dans chaque repo)
+npm run test             # Tests frontend + backend
+npm run test:frontend    # Tests frontend uniquement
+npm run test:backend     # Tests backend uniquement
+
+# Qualité du code
+npm run lint             # Linting global
+npm run format           # Formatage global
+npm run ci               # CI complète
 ```
 
-### Configuration des repos
+## 🐳 Configuration Docker
 
-- **Backend** : `backend-mediatheque/.env` → MongoDB Atlas, JWT, Cloudinary, Email
-- **Frontend** : `frontend-mediatheque/.env` → API URL
+### Services orchestrés
+- **Backend** : Port 5001, mode développement avec nodemon
+- **Frontend** : Port 3000, mode production avec Nginx
 
-## 🐳 Architecture Docker
+### Volumes montés
+- **Backend** : Logs et fichier `.env`
+- **Frontend** : Code source et fichier `.env`
 
-- **Backend**: Node.js 18 Alpine, mode développement avec nodemon
-- **Frontend**: Node.js 20 Alpine, mode développement avec Vite
-- **Base de données**: MongoDB Atlas (externe, pas de conteneur local)
-- **Réseau**: Bridge Docker dédié
-- **Volumes**: Montage des .env et logs
+## ⚠️ Important
 
-## 🎯 Avantages de cette configuration
+### Configuration des variables d'environnement
+- **Ne pas créer** de fichier `.env` dans ce workspace
+- Les variables sont gérées dans chaque repo individuel :
+  - `backend-mediatheque/.env`
+  - `frontend-mediatheque/.env`
 
-- ✅ **Données persistantes** : MongoDB Atlas (pas de perte de données)
-- ✅ **Configuration partagée** : .env versionné pour l'équipe
-- ✅ **Démarrage immédiat** : Pas de configuration manuelle
-- ✅ **Développement optimisé** : Hot-reload et logs en temps réel
-- ✅ **Sécurité** : Secrets dans les repos individuels, pas dans le workspace
+### Dépendances
+- Ce workspace n'installe **aucune dépendance** des projets
+- Chaque repo gère ses propres `node_modules`
+- Utilisez `npm run install:all` pour installer tout
 
-## 🆘 Dépannage
+## 🔍 Dépannage
 
-### Problèmes courants
-
-1. **Ports déjà utilisés**: Vérifiez qu'aucun service n'utilise les ports 3000, 5001
-2. **Permissions Docker**: Assurez-vous d'avoir les droits pour exécuter Docker
-3. **Connexion MongoDB**: Vérifiez votre configuration Atlas dans `backend-mediatheque/.env`
-
-### Commandes de diagnostic
-
+### Services qui ne démarrent pas
 ```bash
-make check          # Vérification complète de l'environnement
-make quick-check    # Vérification rapide Docker Compose
-make status         # Statut des services
-make logs           # Logs en temps réel
+# Vérifier l'environnement
+make check
+
+# Vérifier les logs
+make logs
+
+# Redémarrer complètement
+make dev:rebuild
 ```
 
-### Vérifications rapides
-
+### Problèmes de ports
 ```bash
-# Vérifier la configuration Docker
-make quick-check
+# Vérifier les ports utilisés
+lsof -i :3000
+lsof -i :5001
 
-# Vérifier les logs d'un service
-make logs-backend
-make logs-frontend
+# Arrêter et relancer
+make stop
+make dev
+```
 
-# Vérifier le statut
+### Vérification complète
+```bash
+# Diagnostic automatique
+./scripts/check.sh
+
+# Statut des services
 make status
 ```
 
 ## 🤝 Contribution
 
-1. **Clonez ce workspace**
-   ```bash
-   git clone <votre-repo-workspace>
-   cd workspace-mediatheque
-   ```
+1. **Fork** du repository
+2. **Clone** avec les repos frontend/backend
+3. **Développement** dans chaque repo individuel
+4. **Test** avec `make dev` et `make test`
+5. **Pull Request** sur ce workspace
 
-2. **Créez les liens vers vos repos**
-   ```bash
-   ln -sf ../backend-mediatheque ./backend-mediatheque
-   ln -sf ../frontend-mediatheque ./frontend-mediatheque
-   ```
+---
 
-3. **Lancez l'environnement**
-   ```bash
-   make setup
-   make dev
-   ```
-
-4. **C'est parti !** 🎉
-
-## 📚 Documentation
-
-- **Makefile** : Commandes disponibles et leur utilisation
-- **scripts/** : Scripts d'automatisation
-- **docker-compose.yml** : Configuration des services
-
-## 📄 Licence
-
-Ce projet est sous licence ISC.
+**Simple pont Docker entre vos projets médiathèque** 🚀
